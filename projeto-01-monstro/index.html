@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matador de Monstros</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="panel scores">
+            <div class="score">
+                <h1>Jogador</h1>
+                <div class="life-bar">
+                    <div class="life"
+                        :class="{danger: jogador.energia < 20}"
+                        :style="{width: jogador.energia +'%'}">
+                    </div>                    
+                </div>                
+            </div>
+            <div class="score">
+                <h1>Monstro</h1>
+                <div class="life-bar">
+                    <div class="life" 
+                        :class="{danger: monstro.energia < 20}"
+                        :style="{width: monstro.energia +'%'}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel buttons">
+            <div v-if="!gameOver">
+                <button class="btn attack" @click="executaAtaque(false)">ATAQUE</button>
+                <button class="btn especial-attack" @click="executaAtaque(true)" :disabled="ataqueContador != 5" :class="{disabled : ataqueContador != 5}" >ATAQUE ESPECIAL</button>
+                <button class="btn heal" @click='getCure'>CURAR</button>
+                <button class="btn give-up" @click='gameOver = true'>DESISTIR</button>
+            </div>
+            <div v-else>
+                <button class="btn new-game" @click="iniciarJogo">NOVO JOGO</button>
+            </div>    
+        </div>
+        <div v-if="hasResult" class="panel result">
+            <div v-if="monstro.energia == 0" class="win">Você ganhou!!! :)</div>
+            <div v-else class="lose">Você perdeu! :(</div>
+        </div>
+        <div v-if="eventos.length" class="panel logs">
+            <ul>
+                <li v-for="evento in eventos" class="log"
+                    :class="evento.cls">
+                    {{ evento.text }}
+                </li>
+            </ul>
+        </div>
+    </div>  
+    
+    <script src="app.js"></script>
+</body>
+</html>
