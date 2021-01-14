@@ -1,8 +1,7 @@
 import Vue from 'vue'
-
 export default new Vue({
     methods: {
-        setUsuarioSeleciondo(usuario) {
+        setUsuarioSelecionado(usuario) {
             this.$emit('usuarioSelecionado', usuario)
         },
         onUsuarioSelecionado(callback) {

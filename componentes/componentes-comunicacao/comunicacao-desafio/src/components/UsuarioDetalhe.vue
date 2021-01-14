@@ -21,7 +21,7 @@ export default {
     created() {
         barramento.onUsuarioSelecionado(usuario => {
             this.usuario = usuario
-        })
+        })        
     }
 }
 </script>
