@@ -2,7 +2,7 @@
 	<div id="app">
 		<h1>Formulário Desafio</h1>
 		<div class="conteudo">
-			<form class="painel">
+			<div class="painel" v-if="!enviado">
 				<div class="cabecalho">Formulário</div>
 				<!-- Exercicio 01 -->
 				<!-- Criar uma formulário de registro -->
@@ -11,17 +11,46 @@
 				<!-- Senha -->
 				<!-- Armazenar Dados? (Sim/Não) -->
 
+				<NomeUsuario v-model="nomeCompleto" />
+
+				<Rotulo nome="Entre com o email">
+					<input type="text" name="email" v-model="email" />
+				</Rotulo>
+				<Rotulo nome="Entre com o senha">
+					<input type="password" name="senha" v-model="senha"/>
+				</Rotulo>
+				<Rotulo nome="Armazenar os dados">
+					<span class="mr-4"><input type="radio" 
+						value="sim" v-model="armazenarDados"> Sim</span>
+					<span class="mr-4"><input type="radio" 
+						value="nao" v-model="armazenarDados"> Não</span>
+				</Rotulo>
+				
 				<!-- Exercicio 02 -->
 				<!-- Só mostrar o fomulário de não tiver sido submetido -->
 				<!-- Mostrar a área de Resultado apenas quando o formulário for submetido -->
-				
+
+				<button @click.prevent="enviado = true" type="submit">Enviar</button>
+
 				<!-- Exercicio 03 -->
 				<!-- Crie um componente personalizado NomeCompleto -->
 				<!-- Esse componente deve receber Nome e Sobrenome -->
-			</form>
-			<div class="painel">
+			</div>
+			<div class="painel" v-else >
 				<div class="cabecalho">Resultado</div>
-
+				<Rotulo nome="Entre com o nome">
+					<span>{{ nomeCompleto.nome }} {{ nomeCompleto.sobrenome }}</span>
+				</Rotulo>
+				<Rotulo nome="Entre com o email">
+					{{ email }}
+				</Rotulo>
+				<Rotulo nome="Entre com o senha">
+					{{ senha }}
+				</Rotulo>
+				<Rotulo nome="Armazenar os dados">
+					{{ armazenarDados }}
+				</Rotulo>		
+		
 			</div>
 		</div>
 	</div>
@@ -29,10 +58,23 @@
 
 <script>
 import Rotulo from './components/Rotulo.vue'
+import NomeUsuario from './components/NomeUsuario.vue'
 
 export default {
 	name: 'app',
-	components: { Rotulo }
+	components: { Rotulo, NomeUsuario },
+	data() {
+		return {
+			nomeCompleto: {
+				nome: '',
+				sobrenome: '',
+			},
+			email: '',
+			senha: '',
+			armazenarDados: 'nao',
+			enviado: false
+		}
+	}
 }
 </script>
 
