@@ -1,6 +1,10 @@
 <template>
 	<div id="app" class="container">
 		<h1>HTTP com Axios</h1>
+		<b-alert show dismissible v-for="mensagem in mensagens" 
+			:key="mensagem.texto"
+			:variant="mensagem.tipo"
+		>{{ mensagem.texto }}</b-alert>
 		<b-card>
 			<b-form-group label="Nome:">
 				<b-form-input type="text" size="lg"
@@ -18,13 +22,15 @@
 			<b-button @click="salvar" size="lg" variant="primary" class="mr-2">Salvar</b-button>
 			<b-button @click="obterUsuarios" size="lg" variant="success">Obter Usuarios</b-button>
 
-			<b-list-group>
+			<b-list-group class="mt-4">
 				<b-list-group-item v-for="(usuario, id) in usuarios" :key="id" >
 					<strong>Nome: </strong>{{ usuario.nome }}<br />
 					<strong>Email:</strong>{{ usuario.email }}<br />
 					<strong>ID: </strong>{{ id }}<br />
-
-
+					<b-button variant="warning" size="lg"
+						@click="carregar(id)">Carregar</b-button>
+					<b-button variant="danger" size="lg" 
+						@click="excluir(id)" class="ml-2" >Excluir</b-button>	
 				</b-list-group-item>
 			</b-list-group>
 		</b-card>
@@ -35,7 +41,9 @@
 export default {
 	data() {
 		return {
+			mensagens: [],
 			usuarios: [],
+			id: null, 
 			usuario: {
 				nome: '',
 				email: ''
@@ -43,20 +51,44 @@ export default {
 		}
 	},
 	methods: {
+		limpar() {
+			this.usuario.nome = ''
+			this.usuario.email = ''
+			this.id = null,
+			this.mensagens = []
+		},
 		salvar() {
-			this.$http.post('usuario.json', this.usuario)
-			.then(res => {
-				if (res.status === 200) {
-					this.usuario.nome = ''
-					this.usuario.email = ''
-				}
-			})
+			const metodo = this.id ? 'patch' : 'post'
+			const finalUrl = this.id ? `/${this.id}.json` : '.json'
+
+			this.$http[metodo](`/usuarios${finalUrl}`, this.usuario)
+				.then(() => {
+					this.limpar()
+					this.mensagens.push({
+						texto: 'Operação realizada com sucesso.',
+						tipo: 'success'
+					})
+				})
 		},
 		obterUsuarios() {
-			this.$http.get('usuario.json')
+			this.$http.get('usuarios.json')
 			.then(res => {
 				this.usuarios = res.data
 			})
+		},
+		carregar(id) {
+			this.id = id
+			this.usuario = { ...this.usuarios[id] }
+		},
+		excluir(id) {
+			this.$http.delete(`/usuarios/${id}.json`)
+				.then(() => this.limpar())
+				.catch(err => {
+					this.mensagens.push({
+						texto: `Problema para excluir (${err}).`,
+						tipo: 'danger'
+					})
+				})
 		}
 	}
 
