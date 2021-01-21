@@ -18,6 +18,14 @@
 export default {
     // recuperando por props
     props: ['id'],
+    beforeRouteEnter(to, from, next) {
+        console.log('dentro do componente -> usuario detalhe')
+        next()
+        // Uma forma de acessar as props antes..         
+        // next(vm => {
+        //     console.log(vm.id)
+        // })
+    }
 
     // recuperando por data/watch
     // data() {
