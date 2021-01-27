@@ -12,7 +12,7 @@ export default {
     components: { Stock },
     computed: {
        ...mapGetters({           
-           stocks: 'stockportfolio'
+           stocks: 'stockPortfolio'
        }) 
     }
 }
