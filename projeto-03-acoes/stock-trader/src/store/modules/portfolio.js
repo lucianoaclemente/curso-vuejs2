@@ -1,7 +1,8 @@
 export default {
     state: {
         funds: 10000,
-        stocks: []
+        stocks: [],
+        history: []
     },
     mutations: {
         buyStock(state, { stockId, quantity, stockPrice }) {
@@ -19,6 +20,9 @@ export default {
             }
 
             state.funds -= stockPrice * quantity
+
+            const operacao = { data: new Date(), operation: 'compra', stockId, quantity, stockPrice }
+            state.history.push(operacao)
         },
         sellStock(state, { stockId, quantity, stockPrice }) {
             const record = state.stocks.find(
@@ -30,12 +34,16 @@ export default {
             } else {
                 state.stocks.splice(state.stocks.indexOf(record), 1)
             }
-
+            
             state.funds += stockPrice * quantity
+            
+            const operacao = { data: new Date(), operation: 'venda', stockId, quantity, stockPrice }
+            state.history.push(operacao)            
         },
         setPortfolio(state, portfolio) {
             state.funds = portfolio.funds
             state.stocks = portfolio.stockPortfolio ? portfolio.stockPortfolio : []
+            state.history = portfolio.history ? portfolio.history : []
         }
     },
     actions: {
@@ -60,6 +68,22 @@ export default {
         },
         funds(state) {
             return state.funds
+        },
+        history(state, getters) {
+            return state.history.map(operation => {
+                const record = getters.stocks.find(
+                    element => element.id == operation.stockId      
+                )
+
+                return { 
+                    data: operation.data,
+                    operation: operation.operation,
+                    stockId: operation.stockId,
+                    stockName: record.name,
+                    quantity: operation.quantity,
+                    stockPrice: operation.stockPrice
+                }
+            })
         }
     }
 }

@@ -9,7 +9,8 @@ export default {
                 commit('setStocks', data.stocks)
                 commit('setPortfolio', {
                     funds: data.funds,
-                    stockPortfolio: data.stockPortfolio
+                    stockPortfolio: data.stockPortfolio,
+                    history: data.history
                 })
             }
         }) 

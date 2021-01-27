@@ -8,6 +8,7 @@
             <v-btn flat to="/">Início</v-btn>
             <v-btn flat to="/portfolio">Portfolio</v-btn>
             <v-btn flat to="/stocks">Stock</v-btn>
+            <v-btn flat to="/operacoes">Operações</v-btn>
         </v-toolbar-items>
 
         <v-spacer></v-spacer>
@@ -52,9 +53,8 @@ export default {
             this.randomizeStocks()
         },
         saveData() {
-            const { funds, stockPortfolio, stocks } = this.$store.getters
-
-            this.$http.put('data.json', { funds, stockPortfolio, stocks })
+            const { funds, stockPortfolio, stocks, history } = this.$store.getters
+            this.$http.put('data.json', { funds, stockPortfolio, stocks, history })
         },
         loadDataLocal() {
             this.loadData()
