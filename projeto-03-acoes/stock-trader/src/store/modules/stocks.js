@@ -11,7 +11,7 @@ export default {
     },
     actions: {
         buyStock({ commit }, order) {
-            commit()
+            commit('buyStock', order)
         },
         initStock({ commit }) {
             commit('setStocks', stocks)
