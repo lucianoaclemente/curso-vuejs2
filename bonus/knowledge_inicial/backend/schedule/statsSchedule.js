@@ -19,8 +19,13 @@ module.exports = app => {
             createdAt: new Date()
         })
 
-        const change
-
+        const changeUsers = !lastStat || stat.users !== lastStat.users
+        const changeCategories = !lastStat || stat.categories !== lastStat.categories
+        const changeArticles = !lastStat || stat.articles !== lastStat.articles           
+        
+        if (changeUsers || changeCategories || changeArticles) {
+            stat.save().then(() => console.log('[Stats] Estatíticas atualizadas'))
+        }
     })
 
 }
