@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style>
-    .page-title {
+    .page-title h1 {
         margin: 0px;        
     }
 
